@@ -2,11 +2,14 @@ package com.example.fahadtariq.ottawatraffic;
 
 import android.support.v4.app.FragmentActivity;
 import android.os.Bundle;
+import android.view.View;
 
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
+import com.squareup.picasso.Picasso;
 
 public class MapsActivity extends FragmentActivity {
 
@@ -60,6 +63,50 @@ public class MapsActivity extends FragmentActivity {
      * This should only be called once and when we are sure that {@link #mMap} is not null.
      */
     private void setUpMap() {
-        mMap.addMarker(new MarkerOptions().position(new LatLng(0, 0)).title("Marker"));
+        //mMap.addMarker(new MarkerOptions().position(new LatLng(0, 0)).title("Marker"));
+
+        mMap.setInfoWindowAdapter(new GoogleMap.InfoWindowAdapter() {
+            @Override
+            public View getInfoWindow(Marker marker) {
+                // inflate view window
+
+                // set other views content
+
+                // set image view like this:
+                if (not_first_time_showing_info_window) {
+                    Picasso.with(ActivityClass.this).load(restaurantPictureURL).into(imgInfoWindowPicture);
+                } else { // if it's the first time, load the image with the callback set
+                    not_first_time_showing_info_window=true;
+                    Picasso.with(ActivityClass.this).load(restaurantPictureURL).into(imgInfoWindowPicture,new InfoWindowRefresher(marker));
+                }
+
+                return v;
+            }
+
+            @Override
+            public View getInfoContents(Marker marker) {
+                return null;
+            }
+        });
+
+        mMap.addMarker(new MarkerOptions()
+                .position(new LatLng(45.362648, -75.711412))
+                .title("Camera"));
+    }
+
+    private class InfoWindowRefresher implements Callback {
+        private Marker markerToRefresh;
+
+        private InfoWindowRefresher(Marker markerToRefresh) {
+            this.markerToRefresh = markerToRefresh;
+        }
+
+        @Override
+        public void onSuccess() {
+            markerToRefresh.showInfoWindow();
+        }
+
+        @Override
+        public void onError() {}
     }
 }
