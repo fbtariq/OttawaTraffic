@@ -5,11 +5,43 @@
     android:paddingTop="@dimen/activity_vertical_margin"
     android:paddingBottom="@dimen/activity_vertical_margin" tools:context=".MainActivityFragment">
 
-    <ListView
+    <Button
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:text="Traffic Cameras"
+        android:id="@+id/tc_button"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentStart="true"
+        android:onClick="open_gmaps"/>
+
+    <Button
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:text="Traffic Alerts"
+        android:id="@+id/ta_button"
+        android:layout_below="@+id/tc_button"
+        android:layout_alignParentStart="true" />
+
+    <Button
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:text="Traffic Resources (parking lots, etc)"
+        android:id="@+id/tr_button"
+        android:layout_below="@+id/ta_button"
+        android:layout_alignEnd="@+id/ta_button" />
+
+    <Button
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:text="Cycling Resources"
+        android:id="@+id/cr_button"
+        android:layout_below="@+id/tr_button"
+        android:layout_alignParentStart="true" />
+
+    <ImageView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:id="@+id/main_listView"
-        android:layout_alignParentStart="true"
-        android:layout_alignParentTop="true" />
-
+        android:id="@+id/imageView1"
+        android:layout_below="@+id/cr_button"
+        android:layout_alignParentStart="true" />
 </RelativeLayout>
