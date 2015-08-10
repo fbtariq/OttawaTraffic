@@ -3,4 +3,11 @@
     <string name="hello_world">Hello world!</string>
     <string name="action_settings">Settings</string>
     <string name="title_activity_maps">Map</string>
+    <string name="title_activity_brp">Bicycle Ring &amp; Posts</string>
+    <string name="title_activity_tc">Traffic Cameras</string>
+    <string name="title_activity_bcn">Bicycle Cycling Network</string>
+    <string name="title_activity_tp">Traffic Parking</string>
+    <string name="title_activity_ti">Traffic Incidents</string>
+    <string name="marker_heading"><u>Show/hide Markers for: </u></string>
+    <color name="toastColor">#808080</color>
 </resources>

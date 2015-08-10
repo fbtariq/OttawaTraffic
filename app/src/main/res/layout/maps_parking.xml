@@ -1,0 +1,51 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:orientation="vertical"
+    android:weightSum="1">
+
+    <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        android:id="@+id/checkbox_linear"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:text="@string/marker_heading"
+            android:id="@+id/textView"
+            android:layout_alignParentTop="true"
+            android:layout_alignParentStart="true"
+            android:paddingTop="3dp"
+            android:textStyle="bold" />
+
+        <CheckBox
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Parking Lots"
+            android:id="@+id/checkBox_ParkingLots"
+            android:checked="true"
+            android:layout_below="@+id/textView"
+            android:layout_alignParentStart="true" />
+
+        <CheckBox
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Park &amp; Ride Lots"
+            android:id="@+id/checkBox_ParkRideLots"
+            android:checked="true"
+            android:layout_alignTop="@+id/checkBox_ParkingLots"
+            android:layout_toEndOf="@+id/checkBox_ParkingLots" />
+
+
+    </RelativeLayout>
+
+    <fragment
+        xmlns:map="http://schemas.android.com/apk/res-auto"
+        android:id="@+id/map"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        class="com.google.android.gms.maps.SupportMapFragment"
+        android:scrollbars="vertical" />
+</LinearLayout>

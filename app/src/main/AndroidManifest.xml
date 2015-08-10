@@ -5,7 +5,9 @@
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.READ_PHONE_STATE" />
     <uses-permission android:name="com.google.android.providers.gsf.permission.READ_GSERVICES" />
+
     <!--
  The ACCESS_COARSE/FINE_LOCATION permissions are not required to use
          Google Maps Android API v2, but are recommended.
@@ -36,8 +38,28 @@
             android:value="@string/google_maps_key" />
 
         <activity
-            android:name=".MapsActivity"
-            android:label="@string/title_activity_maps" >
+            android:name=".ActivityBicycleRingPosts"
+            android:label="@string/title_activity_brp" >
+        </activity>
+
+        <activity
+            android:name=".ActivityCameras"
+            android:label="@string/title_activity_tc" >
+        </activity>
+
+        <activity
+            android:name=".ActivityTrafficIncidents"
+            android:label="@string/title_activity_ti" >
+        </activity>
+
+        <activity
+            android:name=".ActivityParking"
+            android:label="@string/title_activity_tp" >
+        </activity>
+
+        <activity
+            android:name=".ActivityCyclingNetwork"
+            android:label="@string/title_activity_bcn" >
         </activity>
     </application>
 

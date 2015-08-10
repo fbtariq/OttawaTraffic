@@ -1,6 +1,7 @@
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools" android:layout_width="match_parent"
-    android:layout_height="match_parent" android:paddingLeft="@dimen/activity_horizontal_margin"
+    android:layout_height="match_parent"
+    android:orientation="vertical" android:paddingLeft="@dimen/activity_horizontal_margin"
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
     android:paddingBottom="@dimen/activity_vertical_margin" tools:context=".MainActivityFragment">
@@ -8,40 +9,36 @@
     <Button
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
+        android:text="Bicycle Cycling Network"
+        android:id="@+id/bcn_button"
+        android:onClick="open_bcn" />
+
+    <Button
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:text="Bicycle Ring &amp; Posts"
+        android:id="@+id/brp_button"
+        android:onClick="open_brp" />
+
+    <Button
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
         android:text="Traffic Cameras"
         android:id="@+id/tc_button"
-        android:layout_alignParentTop="true"
-        android:layout_alignParentStart="true"
-        android:onClick="open_gmaps"/>
+        android:onClick="open_tc" />
 
     <Button
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:text="Traffic Alerts"
-        android:id="@+id/ta_button"
-        android:layout_below="@+id/tc_button"
-        android:layout_alignParentStart="true" />
+        android:text="Traffic Incidents"
+        android:id="@+id/ti_button"
+        android:onClick="open_ti" />
 
     <Button
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:text="Traffic Resources (parking lots, etc)"
-        android:id="@+id/tr_button"
-        android:layout_below="@+id/ta_button"
-        android:layout_alignEnd="@+id/ta_button" />
+        android:text="Traffic Parking &amp; Carpool Lots"
+        android:id="@+id/tp_button"
+        android:onClick="open_tp" />
 
-    <Button
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:text="Cycling Resources"
-        android:id="@+id/cr_button"
-        android:layout_below="@+id/tr_button"
-        android:layout_alignParentStart="true" />
-
-    <ImageView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:id="@+id/imageView1"
-        android:layout_below="@+id/cr_button"
-        android:layout_alignParentStart="true" />
-</RelativeLayout>
+</LinearLayout>
