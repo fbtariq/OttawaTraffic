@@ -1,14 +1,17 @@
 package com.example.fahadtariq.ottawatraffic;
 
 import android.content.Context;
+import android.graphics.Color;
 import android.location.Criteria;
 import android.location.Location;
 import android.location.LocationManager;
 import android.support.v4.app.FragmentActivity;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.View;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
+import android.widget.TextView;
 
 import com.example.fahadtariq.ottawatraffic.HTTPClient.AsynchComplete;
 import com.example.fahadtariq.ottawatraffic.HTTPClient.HTTPAsynchTask;
@@ -105,7 +108,30 @@ public class ActivityTrafficIncidents extends FragmentActivity implements Compou
      * This should only be called once and when we are sure that {@link #mMap} is not null.
      */
     private void setUpMap() {
-        //mMap.addMarker(new MarkerOptions().position(new LatLng(0, 0)).title("Marker"));
+        // Setting a custom info window adapter for the google map so that none of the text is cut-off
+        mMap.setInfoWindowAdapter(new GoogleMap.InfoWindowAdapter() {
+
+            // Use default InfoWindow frame. Nothing fancy
+            @Override
+            public View getInfoWindow(Marker marker) {
+                return null;
+            }
+
+            // Defines the contents of the InfoWindow
+            @Override
+            public View getInfoContents(Marker marker) {
+
+                // Getting view from the layout file info_window_layout
+                View v = getLayoutInflater().inflate(R.layout.custom_infowindow, null);
+
+                TextView tvTitle = ((TextView) v.findViewById(R.id.title));
+                tvTitle.setText(marker.getTitle());
+                TextView tvSnippet = ((TextView) v.findViewById(R.id.snippet));
+                tvSnippet.setText(marker.getSnippet());
+
+                return v;
+            }
+        });
 
         // Initial JSON parse to get the latest URL for CSV resource
         HTTPAsynchTask task_construction_list = new HTTPAsynchTask(this, apiURL1, new AsynchComplete() {
@@ -182,7 +208,8 @@ public class ActivityTrafficIncidents extends FragmentActivity implements Compou
                             .title(data.mapTitle())
                             .snippet(data.mapSnippet())
                             .icon(icon));
-                    markersSpecialEvents.add(m);
+
+                        markersSpecialEvents.add(m);
                 }
             }
         });

@@ -1,13 +1,17 @@
 package com.example.fahadtariq.ottawatraffic;
 
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.graphics.Color;
 import android.location.Criteria;
 import android.location.Location;
 import android.location.LocationManager;
 import android.support.v4.app.FragmentActivity;
 import android.os.Bundle;
+import android.text.Html;
 import android.util.Log;
+import android.view.View;
 
 import com.example.fahadtariq.ottawatraffic.HTTPClient.AsynchComplete;
 import com.example.fahadtariq.ottawatraffic.HTTPClient.HTTPAsynchTask;
@@ -94,24 +98,47 @@ public class ActivityCyclingNetwork extends FragmentActivity {
                     //Tranform the string into a json object
                     final JSONObject json = new JSONObject(result);
                     JSONArray featureArray = json.getJSONArray("features");
-//               for(int i=0;i<featureArray.length();i++)
-//               {
-                    //<---------------------------geoJSon file parsing code---------------------->
 
-                    //while(!featureArray.isNull(i))// This code is currently displaying 200 routes/shapes on map,
-                    // if you want to display all routes/shapes then  you please just uncomment this line of code
-                    // and comment the next line. It takes a lot of time to display all routes on map.
-                    while(i<400)
+                    //while(!featureArray.isNull(i))
+                    while(i<200)
+                    // This code is currently displaying 200 routes/shapes on map.
+                    // To display all routes/shapes uncomment the above line of code
+                    // and comment the next line. It takes a lot of time to display all routes on map (60+ minutes).
                     {
+                        Log.d("RecordNumber", "i = " + i);
                         JSONObject feature = featureArray.getJSONObject(i);
-                        JSONObject geometry= feature.getJSONObject("geometry");
+                        JSONObject geometry = feature.getJSONObject("geometry");
+                        JSONObject properties = feature.getJSONObject("properties");
+                        String existingC = (String) properties.getString("EXISTING_C");
+                        Double shapeLength = (Double) properties.getDouble("SHAPE_Leng");
+
+                        int lineColor = Color.BLUE;
+
+                        switch (existingC) {
+                            case "Path":
+                                lineColor = Color.BLUE;
+                                break;
+                            case "Bike Lane":
+                                lineColor = Color.RED;
+                                break;
+                            case "Paved Shoulder":
+                                lineColor = Color.MAGENTA;
+                                break;
+                            case "Segregated Bike Lane":
+                                lineColor = Color.CYAN;
+                                break;
+                            case "Suggested Route":
+                                lineColor = Color.BLACK;
+                                break;
+                        }
+
                         String geometryType= geometry.getString("type");
                         if(geometryType.compareTo("LineString")==0)//handling LineString shapes
                         {
                             JSONArray coordinatesArray = geometry.getJSONArray("coordinates");
                             JSONArray srcCoordinate = coordinatesArray.getJSONArray(0);
-                            double srcLongitude=(double) srcCoordinate.getDouble(0);
-                            double srcLatitude=(double) srcCoordinate.getDouble(1);
+                            double srcLongitude = (double) srcCoordinate.getDouble(0);
+                            double srcLatitude = (double) srcCoordinate.getDouble(1);
 
                             /*Marker marker = mMap.addMarker(new MarkerOptions()
                                             .position(new LatLng(srcLatitude, srcLongitude))
@@ -127,10 +154,14 @@ public class ActivityCyclingNetwork extends FragmentActivity {
                                 Marker marker2 = mMap.addMarker(new MarkerOptions()
                                         .position(new LatLng(destLatitude,   destLongitude)));//drawing marker for each coordinate point on map.*/
 
-                                Polyline line = mMap.addPolyline(new PolylineOptions()
-                                        .add(new LatLng(srcLatitude, srcLongitude), new LatLng(destLatitude,   destLongitude))
-                                        .width(8)
-                                        .color(Color.BLUE).geodesic(true));// drawing Polyline btw different points on map to display/draw shape/route
+                                PolylineOptions lineOptions = new PolylineOptions();
+                                lineOptions.add(new LatLng(srcLatitude, srcLongitude), new LatLng(destLatitude, destLongitude));
+                                lineOptions.color(lineColor);
+                                lineOptions.width(8);
+                                lineOptions.geodesic(true);
+
+                                Polyline line = mMap.addPolyline(lineOptions);// drawing Polyline btw different points on map to display/draw shape/route
+
                                 srcCoordinate=destCoordinate;
                                 srcLongitude=destLongitude;
                                 srcLatitude=destLatitude;
@@ -163,10 +194,14 @@ public class ActivityCyclingNetwork extends FragmentActivity {
                                     /*Marker marker2 = mMap.addMarker(new MarkerOptions()
                                             .position(new LatLng(destLatitude,   destLongitude)));*/
 
-                                    Polyline line = mMap.addPolyline(new PolylineOptions()
-                                            .add(new LatLng(srcLatitude, srcLongitude), new LatLng(destLatitude,   destLongitude))
-                                            .width(8)
-                                            .color(Color.YELLOW).geodesic(true));
+                                    PolylineOptions lineOptions = new PolylineOptions();
+                                    lineOptions.add(new LatLng(srcLatitude, srcLongitude), new LatLng(destLatitude, destLongitude));
+                                    lineOptions.color(lineColor);
+                                    lineOptions.width(8);
+                                    lineOptions.geodesic(true);
+
+                                    Polyline line = mMap.addPolyline(lineOptions);
+
                                     srcCoordinate=destCoordinate;
                                     srcLongitude=destLongitude;
                                     srcLatitude=destLatitude;
@@ -192,5 +227,23 @@ public class ActivityCyclingNetwork extends FragmentActivity {
 
         mMap.moveCamera(center);
         mMap.animateCamera(zoom);
+    }
+
+
+
+    // Function when the map legend button is clicked
+    public void openLegendDialog(View view) {
+        AlertDialog alertDialog = new AlertDialog.Builder(this).create();
+        alertDialog.setTitle("Cycling Network Legend");
+        alertDialog.setMessage(Html.fromHtml("Path = <font color='#0000ff'>Blue</font><br /> Bike Lane = <font color='#ff0000'>Red</font><br />" +
+                "Paved Shoulder = <font color='#ff00ff'>Magenta</font><br /> Segregated Bike Lane = <font color='#00ffff'>Cyan</font>" +
+                "<br /> Suggested Route = <font color='#000000'>Black</font><br />"));
+        alertDialog.setButton(DialogInterface.BUTTON_POSITIVE, "Got it!", new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int id) {
+                dialog.cancel();
+            }
+        });
+
+        alertDialog.show();
     }
 }

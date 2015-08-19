@@ -7,8 +7,10 @@ import android.location.LocationManager;
 import android.support.v4.app.FragmentActivity;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.View;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
+import android.widget.TextView;
 
 import com.example.fahadtariq.ottawatraffic.HTTPClient.AsynchComplete;
 import com.example.fahadtariq.ottawatraffic.HTTPClient.HTTPAsynchTask;
@@ -96,7 +98,30 @@ public class ActivityParking extends FragmentActivity implements CompoundButton.
      * This should only be called once and when we are sure that {@link #mMap} is not null.
      */
     private void setUpMap() {
-        //mMap.addMarker(new MarkerOptions().position(new LatLng(0, 0)).title("Marker"));
+        // Setting a custom info window adapter for the google map so that none of the text is cut-off
+        mMap.setInfoWindowAdapter(new GoogleMap.InfoWindowAdapter() {
+
+            // Use default InfoWindow frame. Nothing fancy
+            @Override
+            public View getInfoWindow(Marker marker) {
+                return null;
+            }
+
+            // Defines the contents of the InfoWindow
+            @Override
+            public View getInfoContents(Marker marker) {
+
+                // Getting view from the layout file info_window_layout
+                View v = getLayoutInflater().inflate(R.layout.custom_infowindow, null);
+
+                TextView tvTitle = ((TextView) v.findViewById(R.id.title));
+                tvTitle.setText(marker.getTitle());
+                TextView tvSnippet = ((TextView) v.findViewById(R.id.snippet));
+                tvSnippet.setText(marker.getSnippet());
+
+                return v;
+            }
+        });
 
         // Initial JSON parse to get the latest URL for CSV resource
         HTTPAsynchTask task_parking_list = new HTTPAsynchTask(this, apiURL1, new AsynchComplete() {
@@ -152,12 +177,39 @@ public class ActivityParking extends FragmentActivity implements CompoundButton.
         });
         task_park_ride_list.execute();
 
-        CameraUpdate center=
-                CameraUpdateFactory.newLatLng(new LatLng(45.41914,-75.6974));
-        CameraUpdate zoom= CameraUpdateFactory.zoomTo(12);
+        /*
+        The following code is used to detect the user's current location and automatically move the camera to that location.
+        This code hasn't been added to the other activities since I am currently residing in Toronto and this code would
+        cause me to have to zoom out and go to Ottawa manually. Only this activity has this code so that it can be showed
+        in the project demo video.
+         */
+        mMap.setMyLocationEnabled(true);
 
-        mMap.moveCamera(center);
-        mMap.animateCamera(zoom);
+        LocationManager locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
+        Criteria criteria = new Criteria();
+
+        Location location = locationManager.getLastKnownLocation(locationManager.getBestProvider(criteria, false));
+
+        // Check if user's location is available or not
+        if (location != null)
+        {
+            mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(
+                    new LatLng(location.getLatitude(), location.getLongitude()), 13));
+
+            CameraPosition cameraPosition = new CameraPosition.Builder()
+                    .target(new LatLng(location.getLatitude(), location.getLongitude()))
+                    .zoom(13)
+                    .build();
+            mMap.animateCamera(CameraUpdateFactory.newCameraPosition(cameraPosition));
+
+        } else {
+            CameraUpdate center=
+                    CameraUpdateFactory.newLatLng(new LatLng(45.41914,-75.6974));
+            CameraUpdate zoom= CameraUpdateFactory.zoomTo(12);
+
+            mMap.moveCamera(center);
+            mMap.animateCamera(zoom);
+        }
     }
 
     @Override

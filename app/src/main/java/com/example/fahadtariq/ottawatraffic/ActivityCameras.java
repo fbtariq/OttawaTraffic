@@ -108,8 +108,6 @@ public class ActivityCameras extends FragmentActivity implements CompoundButton.
      * This should only be called once and when we are sure that {@link #mMap} is not null.
      */
     private void setUpMap() {
-        //mMap.addMarker(new MarkerOptions().position(new LatLng(0, 0)).title("Marker"));
-
         // Initial JSON parse to get the latest URL for CSV resource
         HTTPAsynchTask task_red_light_camera_list = new HTTPAsynchTask(this, apiURL1, new AsynchComplete() {
             @Override
@@ -162,7 +160,6 @@ public class ActivityCameras extends FragmentActivity implements CompoundButton.
             }
         });
         task_camera_list.execute();
-
 
         mMap.setTrafficEnabled(true);
         CameraUpdate center=

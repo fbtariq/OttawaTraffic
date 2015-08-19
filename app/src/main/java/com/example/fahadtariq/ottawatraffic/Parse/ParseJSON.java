@@ -49,6 +49,7 @@ public class ParseJSON implements StrategyParse {
 
                         i++;
                     }
+                    break;
 
                 case "ParkRideLot":
                     while(!json.isNull(i))
@@ -67,7 +68,7 @@ public class ParseJSON implements StrategyParse {
 
                         i++;
                     }
-
+                    break;
 
                 case "RedLightCamera":
                     while(!json.isNull(i))
@@ -87,6 +88,7 @@ public class ParseJSON implements StrategyParse {
 
                         i++;
                     }
+                    break;
 
                 case "Camera":
                     while(!json.isNull(i))
@@ -106,6 +108,7 @@ public class ParseJSON implements StrategyParse {
 
                         i++;
                     }
+                    break;
 
                 case "TrafficConstruction":
                     while(!json.isNull(i))
@@ -125,6 +128,7 @@ public class ParseJSON implements StrategyParse {
 
                         i++;
                     }
+                    break;
 
                 case "TrafficIncident":
                     while(!json.isNull(i))
@@ -144,6 +148,7 @@ public class ParseJSON implements StrategyParse {
 
                         i++;
                     }
+                    break;
 
                 case "TrafficSpecialEvent":
                     while(!json.isNull(i))
@@ -163,6 +168,7 @@ public class ParseJSON implements StrategyParse {
 
                         i++;
                     }
+                    break;
 
                 case "CyclingNetwork":
                     while(!json.isNull(i))
@@ -182,6 +188,8 @@ public class ParseJSON implements StrategyParse {
 
                         i++;
                     }
+                    break;
+
             }
 
         } catch (JSONException e) {
